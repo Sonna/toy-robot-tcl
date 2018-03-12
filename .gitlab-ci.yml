@@ -1,4 +1,6 @@
-image: efrecon/tcl
+image:
+  name: efrecon/tcl
+  entrypoint: [""]
 
 test:
   script:
