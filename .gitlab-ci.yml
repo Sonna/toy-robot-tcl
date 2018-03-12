@@ -1,6 +1,6 @@
 image:
   name: efrecon/tcl
-  entrypoint: ["bash"]
+  entrypoint: [""]
 
 test:
   script:
