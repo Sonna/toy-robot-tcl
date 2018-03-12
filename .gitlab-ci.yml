@@ -1,0 +1,5 @@
+image: efrecon/tcl
+
+test:
+  script:
+  - bin/test
