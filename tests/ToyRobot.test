@@ -1,0 +1,57 @@
+#-- Example.test:
+
+package require tcltest
+namespace import tcltest::*
+source lib/ToyRobot.tcl
+
+test "Robot can be constructed with default x" {
+  Test: [[Robot new] x] == 0
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot getX
+} -result {0}
+
+test "Robot can be constructed with x = 1" {
+  Test: [[Robot new] x] == 1
+} -setup {
+    set robot [Robot new 1]
+} -body {
+    $robot getX
+} -result {1}
+
+test "Robot can be constructed with default y" {
+  Test: [[Robot new] y] == 0
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot getY
+} -result {0}
+
+test "Robot can be constructed with y = 1" {
+  Test: [[Robot new] y] == 1
+} -setup {
+    set robot [Robot new 0 1]
+} -body {
+    $robot getY
+} -result {1}
+
+test "Robot can be constructed with default facing" {
+  Test: [[Robot new] facing] == 0
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot getFacing
+} -result {NORTH}
+
+test "Robot can be constructed with facing = SOUTH" {
+  Test: [[Robot new] facing] == 0
+} -setup {
+    set robot [Robot new 0 0 "SOUTH"]
+} -body {
+    $robot getFacing
+} -result {SOUTH}
+
+# To see test statistics (Total/Passed/Skipped/Failed),
+# best put this line in the end:
+cleanupTests

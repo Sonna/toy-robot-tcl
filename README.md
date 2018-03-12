@@ -3,6 +3,9 @@
 <!--
 
 # References:
+- [Tcl \- Wikipedia]
+  (https://en.wikipedia.org/wiki/Tcl)
+
 - [tcltk/tcloo: Tcl OO Package \(for Tcl 8\.5, integrated in 8\.6\)\.
   \(Mirror of core\.tcl\.tk\)]
   (https://github.com/tcltk/tcloo)
