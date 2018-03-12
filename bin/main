@@ -1,0 +1,14 @@
+#!/usr/bin/env tclsh8.6
+
+source lib/Example.tcl
+
+puts -nonewline "Please enter a number: "
+flush stdout
+set a [gets stdin]
+
+puts -nonewline "Please enter another number: "
+flush stdout
+set b [gets stdin]
+
+set sum [add $a $b]
+puts "$a + $b = $sum"

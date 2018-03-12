@@ -1,0 +1,62 @@
+#-- Example.test:
+
+package require tcltest
+namespace import tcltest::*
+source lib/Example.tcl
+
+test add-1 {simple addition} {add 3 4} 7
+test mul-1 {simple multiplication} {mul 3 4} 12
+
+
+# If you save this source as, for example, "my_first.test", then execute
+# "tclsh my_first.test", the output will be something like
+#    "==== intro-2 This illustrates how something goes wrong. FAILED
+#    ==== Contents of test case:
+
+#        expr 3 * 5
+
+#    ---- Result was:
+#    15
+#    ---- Result should have been (exact matching):
+#    16
+#    ==== intro-2 FAILED"
+
+# package require tcltest 2.0
+# namespace import ::tcltest::*
+
+test intro-1 {This is as simple as it gets.} {
+    expr 3 * 5
+} 15
+
+test intro-2 {This illustrates how something goes wrong.} {
+    expr 3 * 5
+} 15
+# } 16
+
+
+# test intro-3 {It's very important to validate responses when
+#      things go wrong.} -body {
+#     expr 3 / 0
+# } -returnCodes error -result {divide by zero}
+
+
+test intro-4 {Tcltest, especially with 2.0, is quite powerful
+and flexible.  Part of the reason it can be puzzling on first
+encounter is that there are typically several different styles
+to write any single test.  Two important choices are whether:
+the specification is written as a list of clause-pairs, or a
+list of list of clause pairs; and how to leverage tcltest's
+result comparison.  Here's an example, due to Don, that
+illustrates possibilities ...} {
+     -result 1
+     -body {
+         # Complicated calculations
+     # if [something_wrong] {error xxx}
+     # Still other computations, including logic ...
+         return 1
+     }
+}
+
+# To see test statistics (Total/Passed/Skipped/Failed),
+# best put this line in the end:
+cleanupTests
