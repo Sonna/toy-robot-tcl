@@ -3,6 +3,7 @@
 package require tcltest
 namespace import tcltest::*
 source lib/ToyRobot.tcl
+source tests/TestHelpers.tcl
 
 test "Robot can be constructed with default x" {
   Test: [[Robot new] x] == 0
@@ -51,6 +52,34 @@ test "Robot can be constructed with facing = SOUTH" {
 } -body {
     $robot getFacing
 } -result {SOUTH}
+
+test "Robot can report" {
+  Test: [[Robot new] report] == 0,0,NORTH
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot report
+    return $myBuffer
+} -result {0,0,NORTH
+}
+
+test "Robot can report from 2,3,EAST" {
+  Test: [[Robot new] report] == 2,3,EAST
+} -setup {
+    set robot [Robot new 2 3 "EAST"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot report
+    return $myBuffer
+} -result {2,3,EAST
+}
 
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:

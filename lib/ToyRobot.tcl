@@ -14,4 +14,8 @@ oo::class create Robot {
     method getX {} { return $x }
     method getY {} { return $y }
     method getFacing {} { return $facing }
+
+    method report {} {
+      puts "$x,$y,$facing"
+    }
 }
