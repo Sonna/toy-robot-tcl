@@ -362,7 +362,6 @@ test "Robot can exec LEFT" {
 } -result {0,0,WEST
 }
 
-
 test "Robot can exec RIGHT" {
   Test: [[[Robot new] exec "RIGHT"] report] == "0,0,WEST"
 } -setup {
@@ -376,6 +375,77 @@ test "Robot can exec RIGHT" {
     $robot report
     return $myBuffer
 } -result {0,0,EAST
+}
+
+test "ToyRobot processInput" {
+  Test: processInput "MOVE\nREPORT\nEXIT\n" == "0,0,NORTH"
+} -setup {
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+
+    set inBuffer "MOVE\nREPORT\nEXIT\n"
+    set ch [chan create read [stringchan new $inBuffer]]
+} -cleanup {
+    chan pop stdout
+} -body {
+    processInput $ch
+    return $myBuffer
+} -result {0,1,NORTH
+}
+
+test "ToyRobot processInput with PLACE MOVE LEFT LEFT RIGHT REPORT" {
+  Test: processInput "PLACE 1,1,NORTH\n ... EXIT\n" == "1,2,WEST"
+} -setup {
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+
+    set inBuffer "PLACE 1,1,NORTH\nMOVE\nLEFT\nLEFT\nRIGHT\nREPORT\nEXIT\n"
+    set ch [chan create read [stringchan new $inBuffer]]
+} -cleanup {
+    chan pop stdout
+} -body {
+    processInput $ch
+    return $myBuffer
+} -result {1,2,WEST
+}
+
+test "ToyRobot main tests/fixtures/example_a.txt" {
+  Test: [main "tests/fixtures/example_a.txt"] == "0,1,NORTH"
+} -setup {
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    main "tests/fixtures/example_a.txt"
+    return $myBuffer
+} -result {0,1,NORTH
+}
+
+test "ToyRobot main tests/fixtures/example_b.txt" {
+  Test: [main "tests/fixtures/example_b.txt"] == "0,0,WEST"
+} -setup {
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    main "tests/fixtures/example_b.txt"
+    return $myBuffer
+} -result {0,0,WEST
+}
+
+test "ToyRobot main tests/fixtures/example_c.txt" {
+  Test: [main "tests/fixtures/example_c.txt"] == "3,3,NORTH"
+} -setup {
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    main "tests/fixtures/example_c.txt"
+    return $myBuffer
+} -result {3,3,NORTH
 }
 
 # To see test statistics (Total/Passed/Skipped/Failed),

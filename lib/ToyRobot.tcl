@@ -45,7 +45,7 @@ oo::class create Robot {
       }
     }
 
-    method exec {command {args ""}} {
+    method exec {{command ""} {args ""}} {
       switch $command {
         PLACE {my place $args}
         REPORT {my report}
@@ -75,4 +75,24 @@ oo::class create Robot {
         WEST {x -1 y 0}
       }
     }
+}
+
+proc processInput {stream} {
+    set robot [Robot new]
+
+    while { [gets $stream line] >= 0 && $line != "EXIT" } {
+        $robot exec {*}$line
+    }
+}
+
+proc main {args} {
+    set stream stdin
+
+    if { [llength {*}$args] > 0 } {
+        set fileName [lindex {*}$args 0]
+        set stream [open $fileName r]
+    }
+
+    processInput $stream
+    close $stream
 }
