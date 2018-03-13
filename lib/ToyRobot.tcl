@@ -45,6 +45,19 @@ oo::class create Robot {
       }
     }
 
+    method exec {command {args ""}} {
+      switch $command {
+        PLACE {my place $args}
+        REPORT {my report}
+        MOVE {my move}
+        LEFT {my left}
+        RIGHT {my right}
+        default {
+          # Do nothing
+        }
+      }
+    }
+
     method Turn {} {
       return {
         NORTH {LEFT WEST RIGHT EAST}

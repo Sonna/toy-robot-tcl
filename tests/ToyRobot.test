@@ -106,7 +106,7 @@ test "Robot cannot access private method Turn" {
 } -body {
     $robot Turn
 } -returnCodes 1 \
-  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, move, place, report or right}
+  -result {unknown method "Turn": must be destroy, exec, getFacing, getX, getY, left, move, place, report or right}
 
 test "Robot can move" {
   Test: [[[Robot new] move] y] == 1
@@ -124,7 +124,7 @@ test "Robot cannot access private method Move" {
 } -body {
     $robot Move
 } -returnCodes 1 \
-  -result {unknown method "Move": must be destroy, getFacing, getX, getY, left, move, place, report or right}
+  -result {unknown method "Move": must be destroy, exec, getFacing, getX, getY, left, move, place, report or right}
 
 test "Robot can move from 4,2,SOUTH" {
   Test: [[[Robot new] move] report] == "4,2,SOUTH"
@@ -302,6 +302,81 @@ test "Robot placed 3,4,WEST has facing = WEST" {
     $robot place "3,4,WEST"
     $robot getFacing
 } -result {WEST}
+
+test "Robot can exec PLACE 3,1,EAST" {
+  Test: [[[Robot new] exec "PLACE" "3,1,EAST"] report] == "3,1,EAST"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot exec "PLACE" "3,1,EAST"
+    $robot report
+    return $myBuffer
+} -result {3,1,EAST
+}
+
+test "Robot can exec REPORT" {
+  Test: [[Robot new] exec "REPORT"] == "0,0,NORTH"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot exec "REPORT"
+    return $myBuffer
+} -result {0,0,NORTH
+}
+
+test "Robot can exec MOVE" {
+  Test: [[[Robot new] exec "MOVE"] report] == "0,1,NORTH"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot exec "MOVE"
+    $robot report
+    return $myBuffer
+} -result {0,1,NORTH
+}
+
+test "Robot can exec LEFT" {
+  Test: [[[Robot new] exec "LEFT"] report] == "0,0,WEST"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot exec "LEFT"
+    $robot report
+    return $myBuffer
+} -result {0,0,WEST
+}
+
+
+test "Robot can exec RIGHT" {
+  Test: [[[Robot new] exec "RIGHT"] report] == "0,0,WEST"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot exec "RIGHT"
+    $robot report
+    return $myBuffer
+} -result {0,0,EAST
+}
 
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:
