@@ -106,7 +106,7 @@ test "Robot cannot access private method Turn" {
 } -body {
     $robot Turn
 } -returnCodes 1 \
-  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, move, report or right}
+  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, move, place, report or right}
 
 test "Robot can move" {
   Test: [[[Robot new] move] y] == 1
@@ -124,7 +124,7 @@ test "Robot cannot access private method Move" {
 } -body {
     $robot Move
 } -returnCodes 1 \
-  -result {unknown method "Move": must be destroy, getFacing, getX, getY, left, move, report or right}
+  -result {unknown method "Move": must be destroy, getFacing, getX, getY, left, move, place, report or right}
 
 test "Robot can move from 4,2,SOUTH" {
   Test: [[[Robot new] move] report] == "4,2,SOUTH"
@@ -260,6 +260,48 @@ test "Robot cannot fall off table from 0,4,NORTH" {
     return $myBuffer
 } -result {0,4,NORTH
 }
+
+test "Robot can be placed 3,4,WEST" {
+  Test: [[[Robot new] place "3,4,WEST"] report] == "3,4,WEST"
+} -setup {
+    set robot [Robot new]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot place "3,4,WEST"
+    $robot report
+    return $myBuffer
+} -result {3,4,WEST
+}
+
+test "Robot placed 3,4,WEST has x = 3" {
+  Test: [[[Robot new] place "3,4,WEST"] getX] == 3
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot place "3,4,WEST"
+    $robot getX
+} -result {3}
+
+test "Robot placed 3,4,WEST has y = 4" {
+  Test: [[[Robot new] place "3,4,WEST"] getY] == 4
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot place "3,4,WEST"
+    $robot getY
+} -result {4}
+
+test "Robot placed 3,4,WEST has facing = WEST" {
+  Test: [[[Robot new] place "3,4,WEST"] getFacing] == "WEST"
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot place "3,4,WEST"
+    $robot getFacing
+} -result {WEST}
 
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:

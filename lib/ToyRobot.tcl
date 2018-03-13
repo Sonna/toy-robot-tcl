@@ -15,6 +15,11 @@ oo::class create Robot {
     method getY {} { return $y }
     method getFacing {} { return $facing }
 
+    method place {coordinates} {
+      # lassign [regexp -all -inline {,} {coordinates}] x y facing
+      lassign [split $coordinates ","] x y facing
+    }
+
     method report {} {
       puts "$x,$y,$facing"
     }
