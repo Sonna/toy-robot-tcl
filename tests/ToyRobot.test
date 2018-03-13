@@ -106,7 +106,160 @@ test "Robot cannot access private method Turn" {
 } -body {
     $robot Turn
 } -returnCodes 1 \
-  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, report or right}
+  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, move, report or right}
+
+test "Robot can move" {
+  Test: [[[Robot new] move] y] == 1
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot move
+    $robot getY
+} -result {1}
+
+test "Robot cannot access private method Move" {
+  Test: [[Robot new] Move] == 'errorInfo: unknown method "Move"'
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot Move
+} -returnCodes 1 \
+  -result {unknown method "Move": must be destroy, getFacing, getX, getY, left, move, report or right}
+
+test "Robot can move from 4,2,SOUTH" {
+  Test: [[[Robot new] move] report] == "4,2,SOUTH"
+} -setup {
+    set robot [Robot new 4 2 "SOUTH"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {4,1,SOUTH
+}
+
+test "Robot cannot fall off table from 4,4,NORTH" {
+  Test: [[[Robot new] move] report] == "4,4,NORTH"
+} -setup {
+    set robot [Robot new 4 4 "NORTH"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {4,4,NORTH
+}
+
+test "Robot cannot fall off table from 4,4,EAST" {
+  Test: [[[Robot new] move] report] == "4,4,EAST"
+} -setup {
+    set robot [Robot new 4 4 "EAST"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {4,4,EAST
+}
+
+test "Robot cannot fall off table from 4,0,EAST" {
+  Test: [[[Robot new] move] report] == "4,0,EAST"
+} -setup {
+    set robot [Robot new 4 0 "EAST"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {4,0,EAST
+}
+
+test "Robot cannot fall off table from 4,0,SOUTH" {
+  Test: [[[Robot new] move] report] == "4,0,SOUTH"
+} -setup {
+    set robot [Robot new 4 0 "SOUTH"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {4,0,SOUTH
+}
+
+test "Robot cannot fall off table from 0,0,SOUTH" {
+  Test: [[[Robot new] move] report] == "0,0,SOUTH"
+} -setup {
+    set robot [Robot new 0 0 "SOUTH"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {0,0,SOUTH
+}
+
+test "Robot cannot fall off table from 0,0,WEST" {
+  Test: [[[Robot new] move] report] == "0,0,WEST"
+} -setup {
+    set robot [Robot new 0 0 "WEST"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {0,0,WEST
+}
+
+test "Robot cannot fall off table from 0,4,WEST" {
+  Test: [[[Robot new] move] report] == "0,4,WEST"
+} -setup {
+    set robot [Robot new 0 4 "WEST"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {0,4,WEST
+}
+
+test "Robot cannot fall off table from 0,4,NORTH" {
+  Test: [[[Robot new] move] report] == "0,4,NORTH"
+} -setup {
+    set robot [Robot new 0 4 "NORTH"]
+    set myBuffer ""
+    chan push stdout [CapturingTransform new myBuffer]
+} -cleanup {
+    chan pop stdout
+} -body {
+    $robot move
+    $robot report
+    return $myBuffer
+} -result {0,4,NORTH
+}
 
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:

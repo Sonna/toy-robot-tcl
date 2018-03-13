@@ -27,12 +27,34 @@ oo::class create Robot {
       set facing [dict get [my Turn] $facing RIGHT]
     }
 
+    method move {} {
+      set x [expr {$x + [dict get [my Move] $facing x]}]
+      set y [expr {$y + [dict get [my Move] $facing y]}]
+
+      if {$x < 0 || $x > 4} {
+        set x [expr {$x - [dict get [my Move] $facing x]}]
+      }
+
+      if {$y < 0 || $y > 4} {
+        set y [expr {$y - [dict get [my Move] $facing y]}]
+      }
+    }
+
     method Turn {} {
       return {
         NORTH {LEFT WEST RIGHT EAST}
         SOUTH {LEFT EAST RIGHT WEST}
         EAST {LEFT NORTH RIGHT SOUTH}
         WEST {LEFT SOUTH RIGHT NORTH}
+      }
+    }
+
+    method Move {} {
+      return {
+        NORTH {x 0 y 1}
+        SOUTH {x 0 y -1}
+        EAST {x 1 y 0}
+        WEST {x -1 y 0}
       }
     }
 }
