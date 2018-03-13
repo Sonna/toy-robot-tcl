@@ -38,7 +38,7 @@ test "Robot can be constructed with y = 1" {
 } -result {1}
 
 test "Robot can be constructed with default facing" {
-  Test: [[Robot new] facing] == 0
+  Test: [[Robot new] facing] == "NORTH"
 } -setup {
     set robot [Robot new]
 } -body {
@@ -46,7 +46,7 @@ test "Robot can be constructed with default facing" {
 } -result {NORTH}
 
 test "Robot can be constructed with facing = SOUTH" {
-  Test: [[Robot new] facing] == 0
+  Test: [[Robot new] facing] == "SOUTH"
 } -setup {
     set robot [Robot new 0 0 "SOUTH"]
 } -body {
@@ -80,6 +80,24 @@ test "Robot can report from 2,3,EAST" {
     return $myBuffer
 } -result {2,3,EAST
 }
+
+test "Robot can turn left" {
+  Test: [[[Robot new] left] facing] == "WEST"
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot left
+    $robot getFacing
+} -result {WEST}
+
+test "Robot can turn right" {
+  Test: [[[Robot new] right] facing] == "EAST"
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot right
+    $robot getFacing
+} -result {EAST}
 
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:
