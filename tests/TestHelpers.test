@@ -1,0 +1,25 @@
+#-- Example.test:
+
+package require tcltest
+namespace import tcltest::*
+source tests/TestHelpers.tcl
+
+test "Capture stdin & stdout" {
+  Test: stdin
+} -setup {
+    set outBuffer ""
+    chan push stdout [CapturingTransform new outBuffer]
+
+    set inBuffer "The quick brown fox jumps over the lazy dog.\n"
+    set ch [chan create read [stringchan new $inBuffer]]
+} -cleanup {
+    chan pop stdout
+} -body {
+    puts [gets $ch];   # Prints the whole string
+    return $outBuffer;
+} -result {The quick brown fox jumps over the lazy dog.
+}
+
+# To see test statistics (Total/Passed/Skipped/Failed),
+# best put this line in the end:
+cleanupTests
