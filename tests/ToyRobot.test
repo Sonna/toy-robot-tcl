@@ -99,6 +99,15 @@ test "Robot can turn right" {
     $robot getFacing
 } -result {EAST}
 
+test "Robot cannot access private method Turn" {
+  Test: [[Robot new] Turn] == 'errorInfo: unknown method "Turn"'
+} -setup {
+    set robot [Robot new]
+} -body {
+    $robot Turn
+} -returnCodes 1 \
+  -result {unknown method "Turn": must be destroy, getFacing, getX, getY, left, report or right}
+
 # To see test statistics (Total/Passed/Skipped/Failed),
 # best put this line in the end:
 cleanupTests
