@@ -1,0 +1,12 @@
+sudo: required
+
+language: tcl
+
+services:
+- docker
+
+before_install:
+- docker pull efrecon/tcl
+
+script:
+- docker run --rm -v $(pwd):/app -w /app efrecon/tcl bash -c "bin/test"
